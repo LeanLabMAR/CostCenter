@@ -21,6 +21,8 @@ The flowchart below outlines the end-to-end execution of the flow, highlighting 
 
 ```mermaid
 graph TD
+    %% Directiva principal: TD (Top to Bottom / Vertical)
+
     %% Core Nodes
     Trigger([PowerApps Manual Trigger:<br>Upload Excel File]) --> InitDatos[Initialize 'Datos' Array Variable]
     InitDatos --> CreateFile[SharePoint Online: Create File<br>in /Centro Costos folder]
@@ -40,6 +42,7 @@ graph TD
 
     %% Scope: New Records Inactive
     subgraph New_Records_Inactive [Scope: New Records - Inactive]
+        direction TB
         FilterTables[Filter Tables: matching legacyId] --> ForEachTable[Foreach Filtered Table]
         ForEachTable --> ListRows[List rows present in Table]
         ListRows --> FilterCecos[Filter Rows: Cost Center NOT in Dataverse]
@@ -63,6 +66,7 @@ graph TD
 
     %% Scope: New Records Active
     subgraph New_Records_Active [Scope: New Records - Active]
+        direction TB
         FilterTables2[Filter Tables: non-matching legacyId] --> ForEachTable2[Foreach Filtered Table]
         ForEachTable2 --> ListRows2[List rows present in Table]
         ListRows2 --> FilterCecos2[Filter Rows: Cost Center NOT in Dataverse]
@@ -86,6 +90,7 @@ graph TD
 
     %% Scope: Updates & Teams
     subgraph Updates_Scope [Scope: Updates & Microsoft Teams]
+        direction TB
         ListDataverse[Dataverse: List Records from kmo_tbcentrocostosfas] --> CheckActiveInactive[Filter Inactive Dataverse records]
         CheckActiveInactive --> EvaluateStatusChange{Status Change Loop}
         EvaluateStatusChange -->|Status Update| UpdateStatusRecord[Dataverse: Update status details on row]
